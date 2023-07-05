@@ -1,15 +1,17 @@
 import { writeUserData } from "./firebase.js";
 
 
-const API =
-  "https://api.open-meteo.com/v1/forecast?latitude=50.26&longitude=19.03&hourly=temperature_2m";
-
-const API_ARCHIVE =
-  "https://archive-api.open-meteo.com/v1/archive?latitude=50.26&longitude=19.03&start_date=2023-05-22&end_date=2023-06-05";
+const APPARENT_TEMP_MAX = '/daily/apparent_temperature_max/';
+const APPARENT_TEMP_MEAN = '/daily/apparent_temperature_mean/';
+const APPARENT_TEMP_MIN = '/daily/apparent_temperature_min/';
+const TEMP_MAX = '/daily/temperature_2m_max/';
+const TEMP_MEAN = '/daily/temperature_2m_mean/';
+const TEMP_MIN = '/daily/temperature_2m_min/';
+const TIME = '/daily/time/';
   
 const NUMBERS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-class CustomChart {
+export class CustomChart {
   constructor() {
     this.id = "";
     this.ctx;

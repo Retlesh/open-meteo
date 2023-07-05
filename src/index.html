@@ -15,7 +15,7 @@
   </head>
   <body>
     <main class="container-fluid">
-      <section style="background-color: red" class="flex-column" id="options">
+      <section class="flex-column" id="options-date">
         <div class="form-group">
           <div class="col-md-12 form-control">
             <div class="col-md-4 form-control-plaintext">
@@ -34,6 +34,83 @@
           </div>
         </div>
       </section>
+      <section id="options-temp">
+        <div class="row py-3">
+          <h2>Daily weather variables</h2>
+
+          <div style="display: flex; flex-wrap: wrap" class="col-md-12">
+            <div class="form-check col-md-4">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="temp_max"
+              />
+              <label for="temp_max" class="form-check-label"
+                >Maximum temperature</label
+              >
+            </div>
+            <div class="form-check col-md-4">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="temp_min"
+              />
+              <label for="temp_min" class="form-check-label"
+                >Minimum temperature</label
+              >
+            </div>
+            <div class="form-check col-md-4">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="temp_mean"
+              />
+              <label for="temp_mean" class="form-check-label"
+                >Mean temperature</label
+              >
+            </div>
+            <div class="form-check col-md-4">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="apparent_temp_max"
+              />
+              <label for="apparent_temp_max" class="form-check-label"
+                >Maximum apparent temperature</label
+              >
+            </div>
+            <div class="form-check col-md-4">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="apparent_temp_min"
+              />
+              <label for="apparent_temp_min" class="form-check-label"
+                >Minimum apparent temperature</label
+              >
+            </div>
+            <div class="form-check col-md-4">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="apparent_temp_mean"
+              />
+              <label for="apparent_temp_mean" class="form-check-label"
+                >Mean apparent temperature</label
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+      <button type="button" id="create_new_chart" class="btn btn-light">
+        New chart
+      </button>
       <section
         style="background-color: aqua"
         class="flex-column"
@@ -65,16 +142,17 @@
   <!-- IMPORT MAIN -->
   <script type="module" src="main.js"></script>
 
-  <script>
+  <script type="module">
     //Napisać pseudokod
     //Narysować UML
-
+    import { CustomChart } from "./main.js";
     var chart;
 
-    async function fetchData() {
-      const response = await fetch(API_ARCHIVE);
-      var data = await response.json();
-    }
+
+    $("#create_new_chart").click((e) => {
+      console.log(e);
+      createNewChart();
+    });
 
 
     function createNewChart() {
