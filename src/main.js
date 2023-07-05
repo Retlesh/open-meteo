@@ -1,4 +1,5 @@
-import { writeUserData } from "./firebase-config";
+import { writeUserData } from "./firebase.js";
+
 
 const API =
   "https://api.open-meteo.com/v1/forecast?latitude=50.26&longitude=19.03&hourly=temperature_2m";
@@ -90,7 +91,6 @@ class CustomChart {
   }
 }
 
-writeUserData();
 //types of charts
 //area
 //line

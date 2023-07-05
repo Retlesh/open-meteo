@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDsKCO9Xn0n61mAeQcMpjmCrE2M0cRW1MY",
@@ -16,8 +16,15 @@ const app = initializeApp(firebaseConfig);
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
 
-export function writeUserData(val) {
-  set(ref(database), {
-    test: val,
-  });
-}
+// export function writeUserData(val) {
+//   set(ref(database), {
+//     test: val,
+//   });
+// }
+
+const starCountRef = ref(database, 'daily/apparent_temperature_max');
+onValue(starCountRef, (snapshot) => {
+  const data = snapshot.val();
+  console.log(data);
+  // updateStarCount(postElement, data);
+});
