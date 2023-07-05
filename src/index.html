@@ -111,6 +111,9 @@
       <button type="button" id="create_new_chart" class="btn btn-light">
         New chart
       </button>
+      <button type="button" id="calculate-dates" class="btn btn-light">
+        Calculate dates
+      </button>
       <section
         style="background-color: aqua"
         class="flex-column"
@@ -145,19 +148,6 @@
   <script type="module">
     //Napisać pseudokod
     //Narysować UML
-    import { CustomChart } from "./main.js";
-    var chart;
 
-
-    $("#create_new_chart").click((e) => {
-      console.log(e);
-      createNewChart();
-    });
-
-
-    function createNewChart() {
-      chart = new CustomChart();
-      chart.createChart();
-    }
   </script>
 </html>
