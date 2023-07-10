@@ -2,7 +2,6 @@ import * as firebase from "./firebase.js";
 import * as calc from "./IndexCalculations.js"
 
 
-
 /* These constants are assigning specific values to variables that represent indexes in a database. */
 const INDEX_0_DATE = new Date('2010,1,1');
 const APPARENT_TEMP_MAX = '/daily/apparent_temperature_max/';
