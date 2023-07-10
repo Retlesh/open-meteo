@@ -1,9 +1,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getDatabase, ref, set, onValue, orderByKey, startAt, endAt } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
-import * as data from "./main.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
 import * as calc from "./IndexCalculations.js"
 
-//Setup configuration for connecting to the database
+
+/* The `firebaseConfig` object contains the configuration settings required to initialize the Firebase
+app. It includes properties such as the API key, authentication domain, project ID, storage bucket,
+messaging sender ID, app ID, and the URL of the Firebase Realtime Database. These settings are used
+by the Firebase SDK to connect to the Firebase services and access the database. */
 const firebaseConfig = {
   apiKey: "AIzaSyDsKCO9Xn0n61mAeQcMpjmCrE2M0cRW1MY",
   authDomain: "weather-app-d10c0.firebaseapp.com",
@@ -14,10 +17,17 @@ const firebaseConfig = {
   databaseURL: 'https://weather-app-d10c0-default-rtdb.europe-west1.firebasedatabase.app'
 };
 
-//Create db app instance
+
+/* `const app = initializeApp(firebaseConfig);` is initializing the Firebase app with the provided
+configuration. The `initializeApp` function is a part of the Firebase SDK and it takes the
+`firebaseConfig` object as a parameter. This function sets up the necessary configuration for the
+Firebase app to connect to the Firebase services, such as the Realtime Database. The returned `app`
+object represents the initialized Firebase app and is used to interact with the Firebase services. */
 const app = initializeApp(firebaseConfig);
 
-//Create dictionary for smoother data assignment
+
+/* The `columnsDictionary` is a JavaScript object that maps specific paths in the Firebase Realtime
+Database to corresponding keys in the `ALL_DATA` object. */
 const columnsDictionary =
 {
   '/daily/apparent_temperature_max/': 'APPARENT_TEMP_MAX_DATA',
@@ -29,11 +39,27 @@ const columnsDictionary =
   '/daily/time/': 'TIME_DATA'
 }
 
-// Initialize Realtime Database and get a reference to the service
+/* `const database = getDatabase(app);` is creating a reference to the Realtime Database service using
+the `getDatabase` function from the Firebase SDK. It takes the `app` instance as a parameter, which
+represents the Firebase app that was initialized with the provided configuration. This reference to
+the database service is then used to interact with the database, such as reading or writing data. */
 const database = getDatabase(app);
 
 
-//Fetch and return requested data
+
+/**
+ * The function fetchData retrieves data from a database based on specified start and end IDs, and
+ * stores the data in an object.
+ * @param startId - The startId parameter is the starting point or the minimum value of the key for the
+ * data you want to fetch. It is used to filter the data and only retrieve the data with keys greater
+ * than or equal to the startId.
+ * @param endId - The `endId` parameter is the last ID value that you want to fetch data for. It
+ * represents the end point of the range of IDs you want to retrieve data for.
+ * @param columns - The `columns` parameter is an array that contains the names of the columns in the
+ * database that you want to fetch data from.
+ * @returns an object called `ALL_DATA` which contains arrays of data for each column specified in the
+ * `columns` parameter.
+ */
 function fetchData(startId, endId, columns) {
 
     const ALL_DATA = {
@@ -60,7 +86,16 @@ function fetchData(startId, endId, columns) {
 
 }
 
-//Calls fetchData function and passes it for assigning to chart object
+
+/**
+ * The function `getDataInRange` fetches data within a specified range of IDs and assigns it for a
+ * chart.
+ * @param startId - The startId parameter is the ID of the first data point you want to fetch. It
+ * represents the starting point of the range of data you want to retrieve.
+ * @param endId - The `endId` parameter is the last ID of the data range that you want to fetch.
+ * @param columns - The "columns" parameter is an array that specifies the columns of data that you
+ * want to fetch. Each element in the array represents a column name or index.
+ */
 export function getDataInRange(startId, endId, columns) {
   calc.assignDataForChart(fetchData(startId, endId, columns));
 }

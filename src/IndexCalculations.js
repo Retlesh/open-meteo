@@ -1,6 +1,14 @@
 import { CustomChart } from "./chart.js";
 
 
+/**
+ * The function `countDaysBetweenDates` calculates the number of days between two given dates.
+ * @param date1 - The first date in the format of a Date object or a string that can be parsed into a
+ * Date object.
+ * @param date2 - The `date2` parameter is the later date that you want to calculate the number of days
+ * between.
+ * @returns the number of days between two dates.
+ */
 export function countDaysBetweenDates(date1, date2) {
     // Convert the dates to UTC to avoid timezone differences
     const utcDate1 = new Date(date1.toUTCString());
@@ -15,7 +23,13 @@ export function countDaysBetweenDates(date1, date2) {
     return daysDifference;
 }
 
-//Set up data for displating
+
+/**
+ * The function `assignDataForChart` takes in a data object and creates a chart using the data
+ * provided.
+ * @param data - The `data` parameter is an object that contains various temperature data. It has the
+ * following properties:
+ */
 export function assignDataForChart(data) {
     const labels = data.TIME_DATA;
     let label = '';

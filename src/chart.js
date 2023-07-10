@@ -1,6 +1,8 @@
 //Numbers for generating chart id
 const NUMBERS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
+/* The CustomChart class is a JavaScript class that generates a unique ID for a chart, creates a chart
+container in the DOM, and creates a chart using the Chart.js library. */
 export class CustomChart {
     constructor() {
         this.id = "";
