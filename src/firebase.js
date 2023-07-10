@@ -3,6 +3,7 @@ import { getDatabase, ref, set, onValue, orderByKey, startAt, endAt } from "http
 import * as data from "./main.js";
 import * as calc from "./IndexCalculations.js"
 
+//Setup configuration for connecting to the database
 const firebaseConfig = {
   apiKey: "AIzaSyDsKCO9Xn0n61mAeQcMpjmCrE2M0cRW1MY",
   authDomain: "weather-app-d10c0.firebaseapp.com",
@@ -13,74 +14,53 @@ const firebaseConfig = {
   databaseURL: 'https://weather-app-d10c0-default-rtdb.europe-west1.firebasedatabase.app'
 };
 
+//Create db app instance
 const app = initializeApp(firebaseConfig);
 
-const INDEX_0_DATE = new Date('2010,1,1');
-const APPARENT_TEMP_MAX = '/daily/apparent_temperature_max/';
-const APPARENT_TEMP_MEAN = '/daily/apparent_temperature_mean/';
-const APPARENT_TEMP_MIN = '/daily/apparent_temperature_min/';
-const TEMP_MAX = '/daily/temperature_2m_max/';
-const TEMP_MEAN = '/daily/temperature_2m_mean/';
-const TEMP_MIN = '/daily/temperature_2m_min/';
-const TIME = '/daily/time/';
-
-
-const ALL_DATA = {
-  APPARENT_TEMP_MAX_DATA: [],
-  APPARENT_TEMP_MEAN_DATA: [],
-  APPARENT_TEMP_MIN_DATA: [],
-  TEMP_MAX_DATA: [],
-  TEMP_MEAN_DATA: [],
-  TEMP_MIN_DATA: [],
-  TIME_DATA: []
+//Create dictionary for smoother data assignment
+const columnsDictionary =
+{
+  '/daily/apparent_temperature_max/': 'APPARENT_TEMP_MAX_DATA',
+  '/daily/apparent_temperature_mean/': 'APPARENT_TEMP_MEAN_DATA',
+  '/daily/apparent_temperature_min/': 'APPARENT_TEMP_MIN_DATA',
+  '/daily/temperature_2m_max/': 'TEMP_MAX_DATA',
+  '/daily/temperature_2m_mean/': 'TEMP_MEAN_DATA',
+  '/daily/temperature_2m_min/': 'TEMP_MIN_DATA',
+  '/daily/time/': 'TIME_DATA'
 }
 
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
 
-export function getDataInRange(startId, endId, columns) {
-  console.log(columns);
 
-  ALL_DATA.APPARENT_TEMP_MAX_DATA.length = 0;
-  ALL_DATA.APPARENT_TEMP_MEAN_DATA.length = 0;
-  ALL_DATA.APPARENT_TEMP_MIN_DATA.length = 0;
-  ALL_DATA.TEMP_MAX_DATA.length = 0;
-  ALL_DATA.TEMP_MEAN_DATA.length = 0;
-  ALL_DATA.TEMP_MIN_DATA.length = 0;
-  ALL_DATA.TIME_DATA.length = 0;
+//Fetch and return requested data
+function fetchData(startId, endId, columns) {
 
-  columns.forEach(column => {
-    const dbRef = ref(database, column);
-    onValue(dbRef, (snapshot) => {
-      snapshot.forEach((childSnapshot) => {
-        if (childSnapshot.key >= startId && childSnapshot.key <= endId) {
-          switch (column) {
-            case '/daily/apparent_temperature_max/':
-              ALL_DATA.APPARENT_TEMP_MAX_DATA.push(childSnapshot.val());
-              break;
-            case '/daily/apparent_temperature_mean/':
-              ALL_DATA.APPARENT_TEMP_MEAN_DATA.push(childSnapshot.val());
-              break;
-            case '/daily/apparent_temperature_min/':
-              ALL_DATA.APPARENT_TEMP_MIN_DATA.push(childSnapshot.val());
-              break;
-            case '/daily/temperature_2m_max/':
-              ALL_DATA.TEMP_MAX_DATA.push(childSnapshot.val());
-              break;
-            case '/daily/temperature_2m_mean/':
-              ALL_DATA.TEMP_MEAN_DATA.push(childSnapshot.val());
-              break;
-            case '/daily/temperature_2m_min/':
-              ALL_DATA.TEMP_MIN_DATA.push(childSnapshot.val());
-              break;
-            case '/daily/time/':
-              ALL_DATA.TIME_DATA.push(childSnapshot.val());
-              break;
+    const ALL_DATA = {
+      APPARENT_TEMP_MAX_DATA: [],
+      APPARENT_TEMP_MEAN_DATA: [],
+      APPARENT_TEMP_MIN_DATA: [],
+      TEMP_MAX_DATA: [],
+      TEMP_MEAN_DATA: [],
+      TEMP_MIN_DATA: [],
+      TIME_DATA: []
+    }
+
+    columns.forEach(column => {
+      let dbRef = ref(database, column);
+      onValue(dbRef, (snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+          if (childSnapshot.key >= startId && childSnapshot.key <= endId) {
+            ALL_DATA[columnsDictionary[column]].push(childSnapshot.val());
           }
-        }
+        });
       });
     });
-  });
-  calc.assignDataForChart(ALL_DATA);
+    return ALL_DATA;
 
+}
+
+//Calls fetchData function and passes it for assigning to chart object
+export function getDataInRange(startId, endId, columns) {
+  calc.assignDataForChart(fetchData(startId, endId, columns));
 }

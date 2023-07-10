@@ -1,6 +1,5 @@
-export function isLeapYear(year) {
-    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
-}
+import { CustomChart } from "./chart.js";
+
 
 export function countDaysBetweenDates(date1, date2) {
     // Convert the dates to UTC to avoid timezone differences
@@ -16,7 +15,64 @@ export function countDaysBetweenDates(date1, date2) {
     return daysDifference;
 }
 
+//Set up data for displating
 export function assignDataForChart(data) {
-    console.log(data);
+    const labels = data.TIME_DATA;
+    let label = '';
+    const datasets = [];
 
+    if (data.APPARENT_TEMP_MAX_DATA) {
+        label = 'Apparent maximum temperature';
+        datasets.push({
+            label: label,
+            data: data.APPARENT_TEMP_MAX_DATA,
+            borderWidth: 1
+        })
+    }
+    if (data.APPARENT_TEMP_MEAN_DATA) {
+        label = 'Apparent mean temperature';
+        datasets.push({
+            label: label,
+            data: data.APPARENT_TEMP_MEAN_DATA,
+            borderWidth: 1
+        })
+    }
+    if (data.APPARENT_TEMP_MIN_DATA) {
+        label = 'Apparent minimum temperature';
+        datasets.push({
+            label: label,
+            data: data.APPARENT_TEMP_MIN_DATA,
+            borderWidth: 1
+        })
+    }
+    if (data.TEMP_MAX_DATA) {
+        label = 'Maximum Temperature';
+        datasets.push({
+            label: label,
+            data: data.TEMP_MAX_DATA,
+            borderWidth: 1
+        })
+    }
+    if (data.TEMP_MEAN_DATA) {
+        label = 'Mean temperature';
+        datasets.push({
+            label: label,
+            data: data.TEMP_MEAN_DATA,
+            borderWidth: 1
+        })
+    }
+    if (data.TEMP_MIN_DATA) {
+        label = 'Minimum temperature';
+        datasets.push({
+            label: label,
+            data: data.TEMP_MIN_DATA,
+            borderWidth: 1
+        })
+    }
+
+    //Creates new chart
+    let chart = new CustomChart();
+    setTimeout(() => {
+        chart.createChart(labels, datasets);
+    }, 300);
 }
